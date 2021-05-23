@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repository;
+namespace App\Command;
 
 use App\Entity\YoutubeVideo;
 use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
 
-class YoutubeVideoRepository
+class CreateOrUpdateVideoCommand
 {
 
     public function __construct(
@@ -13,7 +13,7 @@ class YoutubeVideoRepository
     )
     {}
 
-    public function addIfMissing(YoutubeVideo $video): void
+    public function execute(YoutubeVideo $video): void
     {
         $videoYoutubeId = $video->getId();
         

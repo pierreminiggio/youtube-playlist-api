@@ -1,7 +1,7 @@
 <?php
 
+use App\Command\CreateOrUpdateVideoCommand;
 use App\Entity\YoutubeVideo;
-use App\Repository\YoutubeVideoRepository;
 use PierreMiniggio\ConfigProvider\ConfigProvider;
 use PierreMiniggio\DatabaseConnection\DatabaseConnection;
 use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
@@ -19,7 +19,7 @@ $provider = new AccessTokenProvider();
 $accessToken = $provider->get($apiConfig['client_id'], $apiConfig['client_secret'], $apiConfig['refresh_token']);
 
 $dbConfig = $config['db'];
-$repository = new YoutubeVideoRepository(new DatabaseFetcher(new DatabaseConnection(
+$command = new CreateOrUpdateVideoCommand(new DatabaseFetcher(new DatabaseConnection(
     $dbConfig['host'],
     $dbConfig['database'],
     $dbConfig['username'],
@@ -84,7 +84,7 @@ foreach ($playlistIds as $playlistId) {
             $snippet['description'],
             $snippet['tags'] ?? []
         );
-        $repository->addIfMissing($youtubeVideo);
+        $command->execute($youtubeVideo);
         echo PHP_EOL . $youtubeVideo->getId() . ' inserted/updated !';
     }
 }
